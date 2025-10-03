@@ -5,7 +5,7 @@ edition = "2024"
 authors = ["Adrian Calavie <adrian.calavie06@gmail.com>"]
 description = "A CLI tool for getting the full path of a file"
 license = "MIT"
-repository = "https://github.com/yourusername/path"
+repository = "https://github.com/adriancalavie/path"
 keywords = ["cli", "path", "filesystem", "uri"]
 categories = ["command-line-utilities"]
 
