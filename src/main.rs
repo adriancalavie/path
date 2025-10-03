@@ -6,7 +6,7 @@ use clap::Parser;
 #[derive(Parser)]
 #[command(name = "path")]
 #[command(about = "A CLI tool for getting the full path of a file")]
-#[command(version = "1.0")]
+#[command(version = "1.0.0")]
 struct Args {
     /// Input file path
     input: String,
