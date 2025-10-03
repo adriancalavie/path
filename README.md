@@ -12,22 +12,22 @@ cargo install --path .
 
 ```bash
 # Get the full path of a file
-path -i myfile.txt
+path myfile.txt
 
 # Get the full path as a URI
-path -i myfile.txt --uri
+path myfile.txt --uri
 
 # Write the result to an output file
-path -i myfile.txt -o result.txt
+path myfile.txt -o result.txt
 ```
 
 ## Examples
 
 ```bash
-$ path -i src/main.rs
+$ path src/main.rs
 /Users/<username>/Developer/rust/path/src/main.rs
 
-$ path -i src/main.rs --uri
+$ path src/main.rs --uri
 file:///Users/<username>/Developer/rust/path/src/main.rs
 ```
 
