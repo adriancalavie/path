@@ -1,6 +1,6 @@
 [package]
 name = "path"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2024"
 authors = ["Adrian Calavie <adrian.calavie06@gmail.com>"]
 description = "A CLI tool for getting the full path of a file"
