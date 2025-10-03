@@ -1,6 +1,7 @@
 use std::fs::write;
 use std::path;
 
+use arboard::Clipboard;
 use clap::Parser;
 
 #[derive(Parser)]
@@ -15,9 +16,17 @@ struct Args {
     #[arg(short, long)]
     output: Option<String>,
 
+    /// Output to current terminal shell
+    #[arg(short, long, default_value_t = true)]
+    terminal: bool,
+
     /// Output as URI
     #[arg(short, long, default_value_t = false)]
     uri: bool,
+
+    /// Output to clipboard
+    #[arg(short, long, default_value_t = false)]
+    clipboard: bool,
 }
 
 fn get_full_path(file: &str) -> std::io::Result<std::path::PathBuf> {
@@ -37,6 +46,33 @@ fn as_uri(path: &std::path::Path) -> String {
     uri
 }
 
+fn forward_result(args: &Args, content: String) {
+    if args.terminal {
+        println!("{}", content);
+    }
+
+    if let Some(output) = &args.output {
+        if let Err(e) = write(output, &content) {
+            eprintln!("Error writing to file {}: {}", output, e);
+            std::process::exit(1);
+        } else {
+            println!("Full path written to {}", output);
+        }
+    }
+
+    if args.clipboard {
+        match Clipboard::new() {
+            Ok(mut clipboard) => {
+                match clipboard.set_text(content) {
+                    Ok(_) => println!("Full path copied to clipboard"),
+                    Err(e) => eprintln!("Warning: Failed to copy to clipboard: {}", e),
+                }
+            }
+            Err(e) => eprintln!("Warning: Failed to access clipboard: {}", e),
+        }
+    }
+}
+
 fn main() {
     let args = Args::parse();
 
@@ -53,18 +89,7 @@ fn main() {
     };
 
     match get_full_path(&args.input) {
-        Ok(full_path) => match args.output {
-            Some(ref output) => {
-                if let Err(e) = write(output, format_path(full_path).as_bytes()) {
-                    eprintln!("Unable to write to {}: {}", output, e);
-                    std::process::exit(1);
-                }
-                println!("Full path written to {}", output);
-            }
-            None => {
-                println!("{}", format_path(full_path));
-            }
-        },
+        Ok(full_path) => forward_result(&args, format_path(full_path)),
         Err(e) => {
             eprintln!("Error getting full path: {}", e);
             std::process::exit(1);
