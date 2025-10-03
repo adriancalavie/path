@@ -5,6 +5,8 @@ Get the full path of files or folders, with optional URI format output.
 ## Installation
 
 ```bash
+git clone https://github.com/adriancalavie/path.git
+cd path
 cargo install --path .
 ```
 
